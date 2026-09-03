@@ -1,0 +1,1 @@
+Fxtracted files from Asset Archives are saved in this directory.
