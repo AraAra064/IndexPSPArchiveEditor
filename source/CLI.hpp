@@ -41,7 +41,7 @@ namespace CLI
 	int CommandLine(int nArgs, const char** arg)
 	{
 		std::vector<std::string> archiveNames = { "GRP", "DAT", "EVT", "ADV", "FARC", "PSPSND", "PSPBGM" };
-		std::vector<bool> encodedArchives = { true, true, true, false, false, false };
+		std::vector<bool> encodedArchives = { true, true, true, false, false, false, false };
 
 		std::string type = arg[1];
 		type = StringParser::ToUpper(type);
