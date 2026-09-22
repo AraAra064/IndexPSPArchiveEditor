@@ -67,6 +67,7 @@ bool LoadImg(cg::Image& image, std::string fileName)
 	return b;
 }
 
+//Convert CG-Image (BGR-A) to BGRA pixel array of size img.width * img.height
 std::vector<uint32_t> CGImgTo32Int(cg::Image& img)
 {
 	std::vector<uint32_t> pixels(img.getWidth() * img.getHeight());
@@ -74,7 +75,7 @@ std::vector<uint32_t> CGImgTo32Int(cg::Image& img)
 	for (size_t i = 0; i < pixels.size(); i++)
 	{
 		int x = (i % img.getWidth());
-		int y = i / img.getHeight();
+		int y = i / img.getWidth();
 		auto p = img.accessPixel(x, y);
 		pixels[i] = p->first | ((uint32_t)p->second << 24);
 	}

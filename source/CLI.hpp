@@ -85,7 +85,7 @@ namespace CLI
 				return 3;
 			}
 
-			bool e = AssetArchive::SaveArchive(archiveData, fileInfo, newFiles, aaOut, 3 | (encodedArchives[i] ? AssetArchive::IsEncoded : 0));
+			bool e = AssetArchive::SaveArchive(archiveData, fileInfo, newFiles, aaOut, (encodedArchives[i] ? AssetArchive::IsEncoded : 0));
 
 			if (!e)
 			{
@@ -124,11 +124,14 @@ namespace CLI
 				return 2;
 			}
 
+			
 			if (_mkdir(folderName.c_str()) == -1)
 			{
+				#ifndef _DEBUG
 				std::cout << "Folder can not be created (errno=" << errno << ")." << std::endl;
 
 				return 5;
+				#endif
 			}
 
 			auto fileInfo = AssetArchive::GetFileInfo(archiveData);
@@ -149,7 +152,7 @@ namespace CLI
 					uint32_t w = 0, h = 0;
 					auto pixData = IndexSHTXPS::GetPixelData(fileData, w, h, true);
 					
-					if (lodepng::encode(filePath, (uint8_t*)pixData.data(), w, h) == 0)
+					if (lodepng::encode(filePath + "png", (uint8_t*)pixData.data(), w, h) == 0)
 					{
 						std::cout << "Saved \"" << filePath << "\"" << std::endl;
 					} 

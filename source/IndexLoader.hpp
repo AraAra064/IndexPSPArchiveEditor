@@ -33,6 +33,10 @@ namespace IndexLoader
 				}
 
 				auto pixels = CGImgTo32Int(image);
+				for (uint32_t& p : pixels)
+				{
+					p = IndexSHTXPS::BGRAToSHTX(p);
+				}
 				//bool d = (std::max(image.getWidth(), image.getHeight()) <= 256) ? settings.dither1 : settings.dither2;
 				//ReduceColours3(image, image, settings.colourTableSize, 0, settings.percentileStep, d);
 				auto ct = blc::GetColourTable(pixels);
@@ -41,7 +45,7 @@ namespace IndexLoader
 				uint32_t w = image.getWidth();
 				uint32_t h = image.getHeight();
 
-				fileData = IndexSHTXPS::CreateSHTX(pixels, w, h);
+				fileData = IndexSHTXPS::CreateSHTX(pixels, w, h, ct);
 			}
 		}
 		else fileData = LoadFile(fileName); //".NewFiles\\"+
@@ -158,7 +162,14 @@ namespace IndexLoader
 					oW = oldII.width;
 					oH = oldII.height;
 				}
-				newFiles[fileIndex] = UpdateFile(fileName, oW, oH); //".NewFiles\\"+
+
+				//all new files should be in ".NewFiles" either make as default dir or add to all replace funcs
+				auto& nFileData = newFiles[fileIndex];
+				if ((nFileData = UpdateFile(".NewFiles\\" + fileName, oW, oH)).empty())
+				{
+					std::cout << "Could not replace file \'" << fileIndex << "\'" << std::endl;
+					std::cout<< "\"" << line << "\"." << std::endl;
+				}
 			}
 		}
 
