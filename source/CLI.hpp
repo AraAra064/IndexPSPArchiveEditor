@@ -148,11 +148,11 @@ namespace CLI
 				//sht -> png
 				if (*(uint32_t*)&fileData[0] == *(uint32_t*)sht)
 				{
-					//filePath += "png";
+					filePath += "png";
 					uint32_t w = 0, h = 0;
 					auto pixData = IndexSHTXPS::GetPixelData(fileData, w, h, true);
 					
-					if (lodepng::encode(filePath + "png", (uint8_t*)pixData.data(), w, h) == 0)
+					if (lodepng::encode(filePath, (uint8_t*)pixData.data(), w, h) == 0)
 					{
 						std::cout << "Saved \"" << filePath << "\"" << std::endl;
 					} 
